@@ -2,6 +2,8 @@
 # lib_lg v0.1                                                          #
 # main.py                                                              #
 #                                                                      #
+# generic Language Game framework                                      #
+#                                                                      #  
 # Copyright (C) 2013 Joachim de Greeff (www.joachimdegreeff.eu)        #
 #                                                                      #
 # This program is free software: you can redistribute it and/or        #
@@ -18,6 +20,12 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>. #
 ########################################################################
 
+import lg
+
 
 if __name__ == "__main__": 
-    print "doing nothing yet..."
+    new_lg = lg.population_LG()
+    print new_lg.parameters.n_interactions
+    print new_lg.type
+    
+    
