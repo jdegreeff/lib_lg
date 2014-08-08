@@ -21,11 +21,11 @@
 ########################################################################
 
 import lg
+import parameters as par
 
 
-if __name__ == "__main__": 
-    new_lg = lg.population_LG()
-    print new_lg.parameters.n_interactions
-    print new_lg.type
+if __name__ == "__main__":
+    new_lg = lg.LG("DG", par.Parameters())
+    new_lg.run_discrimination_game()
     
     
