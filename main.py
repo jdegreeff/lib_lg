@@ -4,7 +4,7 @@
 #                                                                      #
 # generic Language Game framework                                      #
 #                                                                      #  
-# Copyright (C) 2013 Joachim de Greeff (www.joachimdegreeff.eu)        #
+# Copyright (C) 2014 Joachim de Greeff (www.joachimdegreeff.eu)        #
 #                                                                      #
 # This program is free software: you can redistribute it and/or        #
 # modify it under the terms of the GNU General Public License as       # 
