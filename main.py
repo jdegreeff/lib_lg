@@ -20,12 +20,17 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>. #
 ########################################################################
 
+import cProfile
+
 import lg
 import parameters as par
+
 
 
 if __name__ == "__main__":
     new_lg = lg.LG("DG", par.Parameters())
     new_lg.run_discrimination_game()
+    #cProfile.run('new_lg.run_discrimination_game()')
+    
     
     

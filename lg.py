@@ -3,6 +3,8 @@
 
 import random
 import agent
+import help_functions as hp
+
 
 
 class LG():
@@ -18,7 +20,8 @@ class LG():
         dim = self.pm.n_dimensions
         con = self.pm.context_size
         inter = self.pm.n_interactions
-        return [ [ [ random.random() for _ in xrange(dim)] for _ in xrange(con)] for _ in xrange(inter)]
+        return [ hp.generate_context(dim, con, self.pm.object_distance, self.pm.max_retries) for _ in xrange(inter)]
+    
 
         
     def run_discrimination_game(self):
@@ -30,7 +33,8 @@ class LG():
             self.discrimination_game(agent1, i, random.randint(0, self.pm.context_size-1))
             print "DG " + str(x)
         print "percepts: ", len(agent1.cs.percepts)
-        print "success: ", sum(agent1.dg_success)/(1.0*self.pm.n_interactions)
+        print "success: ", agent1.dg_running_av
+        #print "success: ", sum(agent1.dg_success)/(1.0*self.pm.n_interactions)
             
         
         
@@ -44,7 +48,10 @@ class LG():
             return "percept0"
         
         else:
-            best_matches = agent.match_CS_to_context(context)
+            for i in context:
+                if i == "c":
+                    break
+            best_matches = [ agent.cs.get_best_match(i) for i in context ]
             
             # DG succeeds
             if best_matches.count(best_matches[topic_index]) == 1:
@@ -58,8 +65,8 @@ class LG():
                 agent.dg_success.append(0)
                 
                 # shift cat
-                av_success = 0 # calc_av(agent.dg_success)
-                if (av_success > self.pm.adapt):
+                if (agent.calculate_RA_DG() > self.pm.adapt):
+                    agent.cs.shift_cat(best_matches[topic_index], context[topic_index])
                     return best_matches[topic_index]
                     
                 # create new cat
