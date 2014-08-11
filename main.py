@@ -21,14 +21,11 @@
 ########################################################################
 
 import cProfile
-
 import lg
-import parameters as par
-
 
 
 if __name__ == "__main__":
-    new_lg = lg.LG("DG", par.Parameters())
+    new_lg = lg.LG("DG")
     new_lg.run_discrimination_game()
     #cProfile.run('new_lg.run_discrimination_game()')
     
