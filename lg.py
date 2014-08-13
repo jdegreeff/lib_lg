@@ -77,9 +77,16 @@ class LG():
         """ Guessing Game played by two agents
         """
         
-        a1_word = agent1.get_word(context[topic_index])
+        # agent1 perceives context and finds word
+        if agent1.learning:
+            a1_percept = self.discrimination_game(agent1, context, topic_index)
+        else:
+            a1_percept = agent1.cs.get_best_match(context[topic_index])
+        a1_word = agent1.get_word(a1_percept)
         
+        # agent2 makes guess based on agent1 word
         a2_gg_response = agent2.answer_gg(context, a1_word)
+        
         
         if a2_gg_response == topic_index:
             print "success"
@@ -121,9 +128,9 @@ class LG():
         """ language game with two agents (typically teacher and learner)
         """
         
-        for i in range(self.pm.n_replicas):
+        for i in range(pm.n_replicas):
         
-            agent1 = agent.Agent("agent1", learn=False)
+            agent1 = agent.Agent("agent1", learning=False)
             agent1.load_knowledge() # as agent1 is the teacher, it needs some predefined knowledge
             
             agent2= agent.Agent("agent2")

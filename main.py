@@ -26,7 +26,9 @@ import lg
 
 if __name__ == "__main__":
     new_lg = lg.LG("DG")
-    new_lg.run_discrimination_game()
+    #new_lg.run_discrimination_game()
+    
+    new_lg.two_agents_LG()
     #cProfile.run('new_lg.run_discrimination_game()')
     
     

@@ -8,6 +8,7 @@
 ########################################################################
 
 import math, random
+import data
 
 
 def calc_euclidean_distance(x, y):
@@ -74,5 +75,24 @@ def calc_average(list_of_lists):
         average_list.append(sum(av)/(1.0*len(list_of_lists)))
     return average_list
     
+    
+    
+def generateRandomWord(lexicon, length):
+    """ generates a random word with a given length
+        generated word is not in the provided lexicon
+    """
+    check = False
+    while not check:
+        i = 0
+        word = ""
+        while i < length :
+            if i % 2 == 0:
+                word += str(random.choice(data.consonant_set))
+            else:
+                word += str(random.choice(data.vowel_set))
+            i += 1
+        if word not in lexicon:   #check if word is unique
+            check = True
+    return word
     
     

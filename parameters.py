@@ -16,6 +16,7 @@ learning_rate = 0.15           # Rate at which meanings should be shifted
 running_AV = 20                # Number of games over which running avg is taken
 
 # learning data
+domain = "rgb"                 # domain used in LG
 n_dimensions = 3
 context_size = 3
 max_retries = 500              # maximal times for trying to generate a context with minimum distance between objects
