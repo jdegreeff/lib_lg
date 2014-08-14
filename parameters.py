@@ -10,9 +10,10 @@
 
 # language games
 n_interactions = 1000
-n_replicas = 10
+n_replicas = 1
 adapt = 0.9
 learning_rate = 0.15           # Rate at which meanings should be shifted
+delta = 0.1                    # Increase or decrease of association strength
 running_AV = 20                # Number of games over which running avg is taken
 
 # learning data
@@ -21,3 +22,6 @@ n_dimensions = 3
 context_size = 3
 max_retries = 500              # maximal times for trying to generate a context with minimum distance between objects
 object_distance = 0.4;         # Minimum distance between objects in a context (considered along a line, corrected for higher dimensions)
+
+# global variables
+current_game = 0               # keeps track of current LG 

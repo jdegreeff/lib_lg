@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 import parameters as pm
 
 
-def plot_DG(data, av_percepts):
-    """ Plots average success and average number of percepts
+def plot_DG(data, av_percepts=None):
+    """ Plots average success and (optionally) average number of percepts
         over the course of multiple discrimination games
     """
 
@@ -31,13 +31,14 @@ def plot_DG(data, av_percepts):
     for tl in ax1.get_yticklabels():
         tl.set_color('b')
     
-    # plot average percepts right y-axis
-    ax2 = ax1.twinx()
-    y2 = np.array(av_percepts)
-    ax2.plot(x, y2, 'r')
-    ax2.set_ylabel("Average number of percepts", color='r')
-    for tl in ax2.get_yticklabels():
-        tl.set_color('r')
+    # if provided, plot average percepts on right y-axis
+    if av_percepts:
+        ax2 = ax1.twinx()
+        y2 = np.array(av_percepts)
+        ax2.plot(x, y2, 'r')
+        ax2.set_ylabel("Average number of percepts", color='r')
+        for tl in ax2.get_yticklabels():
+            tl.set_color('r')
     
     #plt.ylim([0.0, 1.0])
     plt.show()

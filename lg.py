@@ -69,6 +69,7 @@ class LG():
                     agent.cs.percepts[tag] = context[topic_index]
                     return_tag = tag
 
+        agent.calculate_RA_DG()
         return return_tag
     
     
@@ -87,13 +88,33 @@ class LG():
         # agent2 makes guess based on agent1 word
         a2_gg_response = agent2.answer_gg(context, a1_word)
         
-        
-        if a2_gg_response == topic_index:
-            print "success"
+        # if success, increase connections and shift learner category towards topic
+        if a2_gg_response[0] == topic_index:
+            agent1.update_matrix(a1_word, a1_percept, pm.delta)
+            agent2.update_matrix(a1_word, a2_gg_response[1], pm.delta)
+            agent2.cs.shift_percept(a2_gg_response[1], context[topic_index])
+            agent1.gg_success.append(1)
+            agent2.gg_success.append(1)
             
-        else:
-            print "fail"
+        # if agent2 does not know agen1 word, learn this
+        elif a2_gg_response == "word unknown":
+            a2_percept = self.discrimination_game(agent2, context, topic_index)
+            agent2.add_word(a2_percept, a1_word)
+            agent1.gg_success.append(0)
+            agent2.gg_success.append(0)
         
+        # agent2 knows word, but points to wrong topic, decrease connection and play DG
+        else:
+            if pm.current_game > 500:
+                pass
+            agent2.update_matrix(a1_word, a2_gg_response[1], -pm.delta)
+            a2_percept = self.discrimination_game(agent2, context, topic_index)
+            agent2.add_word(a2_percept, a1_word)
+            agent1.gg_success.append(0)
+            agent2.gg_success.append(0)
+        
+        agent2.calculate_RA_GG()
+        pm.current_game += 1
 
 
 
@@ -109,7 +130,6 @@ class LG():
             agent1 = agent.Agent("agent1")
             for j in self.td:
                 self.discrimination_game(agent1, j, random.randint(0, pm.context_size-1))
-                agent1.calculate_RA_DG()
                 agent1.dg_n_percepts.append(len(agent1.cs.percepts))
                 
             print "percepts: ", len(agent1.cs.percepts)
@@ -128,6 +148,8 @@ class LG():
         """ language game with two agents (typically teacher and learner)
         """
         
+        all_results = []
+        
         for i in range(pm.n_replicas):
         
             agent1 = agent.Agent("agent1", learning=False)
@@ -135,10 +157,22 @@ class LG():
             
             agent2= agent.Agent("agent2")
             
-            for j in self.td:
+            for x, j in enumerate(self.td):
                 self.guessing_game(agent1, agent2, j, random.randint(0, pm.context_size-1))
+                if x == 500:
+                    pass
             
             print "end replica " + str(i)
+            all_results.append(agent2.gg_running_av)
+            
+        av_results = hp.calc_average(all_results)
+        output.plot_DG(av_results)
+        
+        agent2.matrix.to_csv("output.csv")
+        import csv
+        w = csv.writer(open("output2.csv", "w"))
+        for key, val in agent2.cs.percepts.items():
+            w.writerow([key, val])
 
         
         
